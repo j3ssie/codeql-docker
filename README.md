@@ -20,13 +20,27 @@ docker run -it j3ssie/codeql-docker:latest
 
 ## Usage
 
-### Access container with shell
+### Access container with bash shell
 
 ```shell
-docker run -it -t j3ssie/codeql-docker:latest /bin/bash
+docker run -it --entrypoint=/bin/bash -t j3ssie/codeql-docker:latest /bin/bash
 ```
 
-### Do analyze
+### Run with helper scripts
+
+With `/tmp/src` is your source code and `/tmp/results` is where result store.
+
+> NOTE: make sure /tmp/results folder is exist otherwise no result will be created
+
+```shell
+# simple usage
+docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/opt/results" -e "LANGUAGE=go" j3ssie/codeql-docker:latest
+
+# more options
+docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/opt/results" -e "LANGUAGE=go" -e "FORMAT=csv" -e "QS=golang-security-and-quality.qls" j3ssie/codeql-docker:latest
+```
+
+### Manual analyze
 
 ```shell
 # Copy your code to container
