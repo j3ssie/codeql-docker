@@ -24,15 +24,15 @@ if [ -z $OUTPUT ]
 then
     OUTPUT="/opt/results"
 fi
-DB=$OUTPUT/db
+DB=$SRC/codeql-db
 
 echo "----------------"
-print_green " Language: $LANGUAGE"
-print_green " Query-suites: $QS"
-print_green " Database: $DB"
-print_green " Source: $SRC"
-print_green " Output: $OUTPUT"
-print_green " Format: $FORMAT"
+print_green " [+] Language: $LANGUAGE"
+print_green " [+] Query-suites: $QS"
+print_green " [+] Database: $DB"
+print_green " [+] Source: $SRC"
+print_green " [+] Output: $OUTPUT"
+print_green " [+] Format: $FORMAT"
 echo "----------------"
 
 echo -e "Creating DB: codeql database create --language=$LANGUAGE $DB -s $SRC"

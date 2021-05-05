@@ -38,6 +38,9 @@ docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/op
 
 # more options
 docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/opt/results" -e "LANGUAGE=go" -e "FORMAT=csv" -e "QS=golang-security-and-quality.qls" j3ssie/codeql-docker:latest
+
+# helper script 
+./scripts/run.py -l go -s /tmp/metabigor
 ```
 
 ### Manual analyze

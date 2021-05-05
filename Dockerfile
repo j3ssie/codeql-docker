@@ -66,8 +66,7 @@ ENV PATH="$PATH:${CODEQL_HOME}/codeql:/root/go/bin:/root/.go/bin:/usr/local/sbin
 COPY scripts /root/scripts
 
 # Pre-compile our queries to save time later
-RUN codeql query compile --threads=0 ${CODEQL_HOME}/codeql-repo/*/ql/src/codeql-suites/*.qls
-RUN codeql query compile --threads=0 ${CODEQL_HOME}/codeql-go-repo/ql/src/codeql-suites/*.qls
+RUN /root/scripts/compile-qs.sh
 
 WORKDIR /root/
-ENTRYPOINT ["/root/scripts/run.sh"]
+ENTRYPOINT ["/root/scripts/analyze.sh"]
