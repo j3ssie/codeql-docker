@@ -1,6 +1,6 @@
-# CodeQL docker build
+# Docker for CodeQL
 
-Based on [microsoft/codeql-container](https://github.com/microsoft/codeql-container) with java, golang installed and .NET removed.
+Based on [microsoft/codeql-container](https://github.com/microsoft/codeql-container) with Java, Golang installed and .NET removed.
 
 ## Build & Run
 
@@ -8,44 +8,53 @@ Based on [microsoft/codeql-container](https://github.com/microsoft/codeql-contai
 docker build -t j3ssie/codeql-docker:latest .
 ```
 
-or pull the latest from docker hub
+or pull the latest from [Docker hub](https://hub.docker.com/r/j3ssie/codeql-docker)
 
 ```shell
 docker pull j3ssie/codeql-docker:latest
 
-# then run the container
-docker run -it j3ssie/codeql-docker:latest
 ```
-
 
 ## Usage
 
-### Access container with bash shell
+### Run with helper scripts
 
 ```shell
-docker run -it --entrypoint=/bin/bash -t j3ssie/codeql-docker:latest /bin/bash
+# usage
+./scripts/run.py -l <language-of-source-code> -s <source-code-folder> [--format=csv] [-o ouput]
+
+# simple usage
+./scripts/run.py -l go -s /tmp/insecure-project
+# default output is JSON format so read them with this command
+cat results/issues.sarif-latest| jq '.runs[].results'
+
+# with custom format and output
+./scripts/run.py -l javascript -s /tmp/cc/code-scanning-javascript-demo --format=csv -o sample
+# your output will be store at sample/issues.csv
+
 ```
 
-### Run with helper scripts
+### Run with docker command
 
 With `/tmp/src` is your source code and `/tmp/results` is where result store.
 
-> NOTE: make sure /tmp/results folder is exist otherwise no result will be created
+> NOTE: make sure /tmp/results folder exist otherwise it won't work
 
 ```shell
 # simple usage
 docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/opt/results" -e "LANGUAGE=go" j3ssie/codeql-docker:latest
 
 # more options
-docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/opt/results" -e "LANGUAGE=go" -e "FORMAT=csv" -e "QS=golang-security-and-quality.qls" j3ssie/codeql-docker:latest
+docker run --rm --name codeql-docker -v "/tmp/src:/opt/src" -v "/tmp/results:/opt/results" -e "LANGUAGE=javascript" -e "FORMAT=csv" -e "QS=javascript-security-and-quality.qls" j3ssie/codeql-docker:latest
 
-# helper script 
-./scripts/run.py -l go -s /tmp/metabigor
 ```
 
 ### Manual analyze
 
 ```shell
+# Directly access container with bash shell
+docker run -it --entrypoint=/bin/bash -t j3ssie/codeql-docker:latest
+
 # Copy your code to container
 docker cp <your-source-cde> <docker-ID>:/opt/src
 
@@ -71,3 +80,9 @@ codeql resolve queries
 codeql database upgrade <database>
 
 ```
+
+## Donation
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/j3ssiejjj)
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/j3ssie)

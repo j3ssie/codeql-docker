@@ -43,6 +43,7 @@ def parse_input(args):
 
   DOCKER_CMD = f'''docker run --rm --name codeql-docker -v "{SRC}:/opt/src" -v "{OUTPUT}:/opt/results" -e "LANGUAGE={LANG}" -e "FORMAT={FORMAT}" -e "QS={QS}" j3ssie/codeql-docker:latest'''
 
+
 def main():
   parser = argparse.ArgumentParser(description="Script to start CodeQL Analyze")
   parser.add_argument('--format', nargs='?', type=str, default="sarif-latest", help='Format of output')

@@ -33,8 +33,8 @@ RUN apt-get update && \
         default-jdk \
     	gettext && \
         apt-get clean && \
-        ln -s /usr/bin/python3.8 /usr/bin/python && \
-        ln -s /usr/bin/pip3 /usr/bin/pip 
+        ln -sf /usr/bin/python3.8 /usr/bin/python && \
+        ln -sf /usr/bin/pip3 /usr/bin/pip 
 
 # Install Golang
 RUN wget -q -O - https://raw.githubusercontent.com/canha/golang-tools-install-script/master/goinstall.sh | bash
@@ -52,9 +52,9 @@ RUN mkdir -p ${CODEQL_HOME} \
     /opt/codeql
 
 # get the latest codeql queries and record the HEAD
-RUN git clone https://github.com/github/codeql ${CODEQL_HOME}/codeql-repo && \
+RUN git clone --depth=1 https://github.com/github/codeql ${CODEQL_HOME}/codeql-repo && \
     git --git-dir ${CODEQL_HOME}/codeql-repo/.git log --pretty=reference -1 > /opt/codeql/codeql-repo-last-commit
-RUN git clone https://github.com/github/codeql-go ${CODEQL_HOME}/codeql-go-repo && \
+RUN git clone --depth=1 https://github.com/github/codeql-go ${CODEQL_HOME}/codeql-go-repo && \
     git --git-dir ${CODEQL_HOME}/codeql-go-repo/.git log --pretty=reference -1 > /opt/codeql/codeql-go-repo-last-commit
 
 RUN CODEQL_VERSION=$(cat /tmp/codeql_version) && \
