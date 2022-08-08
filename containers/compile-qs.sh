@@ -12,13 +12,13 @@ print_green() {
 print_green "[+] Start Compiling query suites"
 
 # get all query suites except Java
-ls /root/codeql-home/codeql-go-repo/ql/src/codeql-suites/*.qls > /tmp/list-querysuites
+ls /root/codeql-home/codeql-repo/go/ql/src/codeql-suites/*.qls > /tmp/list-querysuites
 ls /root/codeql-home/codeql-repo/*/ql/src/codeql-suites/*.qls  | grep -v 'java-' | grep -v 'csharp' >> /tmp/list-querysuites
 
 while IFS="" read -r qs || [ -n "$qs" ]
 do
   print_green "[+] Compiling query suites: $qs"
-  codeql query compile --threads=0 $qs
+  codeql query compile --threads=20 $qs
 done < /tmp/list-querysuites
 
 print_green "[+] Done Compiling query suites ..."

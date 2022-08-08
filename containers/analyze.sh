@@ -2,6 +2,7 @@
 
 RED="\033[31m"
 YELLOW="\033[33m"
+CYAN="\033[96m"
 GREEN="\033[32m"
 RESET="\033[0m"
 
@@ -35,8 +36,8 @@ print_green " [+] Output: $OUTPUT"
 print_green " [+] Format: $FORMAT"
 echo "----------------"
 
-echo -e "Creating DB: codeql database create --language=$LANGUAGE $DB -s $SRC"
+echo -e "$CYAN ==> Creating DB:$GREEN codeql database create --language=$LANGUAGE $DB -s $SRC"
 codeql database create --language=$LANGUAGE $DB -s $SRC
 
-echo -e "Start Scanning: codeql database analyze --format=$FORMAT --output=$OUTPUT/issues.$FORMAT $DB $QS"
-codeql database analyze --format=$FORMAT --output=$OUTPUT/issues.$FORMAT $DB $QS
+echo -e "$CYAN ==> Start Scanning:$GREEN codeql database analyze --format=$FORMAT --output=$OUTPUT/issues.$FORMAT $DB $QS"
+codeql database analyze --overwrite --format=$FORMAT --output=$OUTPUT/issues.$FORMAT $DB $QS
