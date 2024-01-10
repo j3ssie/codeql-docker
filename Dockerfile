@@ -4,38 +4,37 @@ LABEL maintainer="j3ssie"
 # tzdata install needs to be non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
 
-# install/update basics and python
+# create user, install/update basics and python
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    	software-properties-common \
-    	vim \
-    	curl \
-    	wget \
-    	git \
-    	jq \
-    	build-essential \
-    	unzip \
-    	apt-transport-https \
-        python3.8 \
-    	python3-venv \
-    	python3-pip \
-    	python3-setuptools \
-        python3-dev \
-        nodejs \
-    	gnupg \
-    	g++ \
-    	make \
-    	gcc \
-    	apt-utils \
-        rsync \
-    	file \
-        dos2unix \
-        default-jdk \
-    	gettext && \
-        apt-get clean && \
-        ln -sf /usr/bin/python3.8 /usr/bin/python && \
-        ln -sf /usr/bin/pip3 /usr/bin/pip 
+	apt-get upgrade -y && \
+	apt-get install -y --no-install-recommends \
+	software-properties-common \
+	nodejs \
+	vim \
+	curl \
+	wget \
+	git \
+	build-essential \
+	unzip \
+	apt-transport-https \
+	python3.10 \
+	python3-venv \
+	python3-pip \
+	python3-setuptools \
+	python3-dev \
+	python-is-python3 \
+	gnupg \
+	g++ \
+	make \
+	gcc \
+	apt-utils \
+	rsync \
+	file \
+	dos2unix \
+	gettext && \
+	apt-get clean && \
+	ln -sf /usr/bin/python3.8 /usr/bin/python && \
+	ln -sf /usr/bin/pip3 /usr/bin/pip 
 
 # Install Golang
 RUN wget -q -O - https://raw.githubusercontent.com/canha/golang-tools-install-script/master/goinstall.sh | bash
@@ -48,18 +47,18 @@ RUN curl --silent "https://api.github.com/repos/github/codeql-cli-binaries/relea
 
 # record the latest version of the codeql-cli
 RUN mkdir -p ${CODEQL_HOME} \
-    ${CODEQL_HOME}/codeql-repo \
-    ${CODEQL_HOME}/codeql-go-repo \
-    /opt/codeql
+	${CODEQL_HOME}/codeql-repo \
+	${CODEQL_HOME}/codeql-go-repo \
+	/opt/codeql
 
 # get the latest codeql queries and record the HEAD
 RUN git clone --depth=1 https://github.com/github/codeql ${CODEQL_HOME}/codeql-repo && \
-    git --git-dir ${CODEQL_HOME}/codeql-repo/.git log --pretty=reference -1 > /opt/codeql/codeql-repo-last-commit
+	git --git-dir ${CODEQL_HOME}/codeql-repo/.git log --pretty=reference -1 > /opt/codeql/codeql-repo-last-commit
 
 RUN CODEQL_VERSION=$(cat /tmp/codeql_version) && \
-    wget -q https://github.com/github/codeql-cli-binaries/releases/download/${CODEQL_VERSION}/codeql-linux64.zip -O /tmp/codeql_linux.zip && \
-    unzip /tmp/codeql_linux.zip -d ${CODEQL_HOME} && \
-    rm /tmp/codeql_linux.zip
+	wget -q https://github.com/github/codeql-cli-binaries/releases/download/${CODEQL_VERSION}/codeql-linux64.zip -O /tmp/codeql_linux.zip && \
+	unzip /tmp/codeql_linux.zip -d ${CODEQL_HOME} && \
+	rm /tmp/codeql_linux.zip
 
 ENV PATH="$PATH:${CODEQL_HOME}/codeql:/root/go/bin:/root/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 COPY scripts /root/scripts
